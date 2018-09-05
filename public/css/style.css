@@ -1,3 +1,8 @@
+.tooltip {
+    z-index: 999
+}
+
+
 .preloader.pls-teal .plc-path {
     stroke: #009688;
 }
@@ -1996,5 +2001,3 @@ select.chosen {
 .mCSB_inside > .mCSB_container {
     margin-right: 0;
 }
-
-

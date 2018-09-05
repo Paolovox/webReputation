@@ -1,13 +1,14 @@
   @extends('layouts.main')
 
 @section('main-content')
+
     <div class="card">
         <div class="action-header palette-Blue-Grey-400 bg clearfix">
             <div class="ah-label hidden-xs palette-White text">Elenco Keywords</div>
             <ul class="ah-actions actions a-alt">
                 <li>
-                    <a class="ah-search-trigger" data-ma-action="ah-search-open" onclick="return $('.addLawyer').toggle();">
-                        <i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
+                    <a title="Aggiungi Keyword" style="cursor:pointer" class="ah-search-trigger" data-ma-action="ah-search-open" onclick="return $('.addKeyword').toggle();">
+                        <i class="zmdi zmdi-collection-plus zmdi-hc-fw"></i>
                     </a>
                 </li>
             </ul>
@@ -17,9 +18,9 @@
                 <p>{{ $message }}</p>
             </div>
         @endif
-        <div class="card addLawyer"  style="display: none">
+        <div class="card addKeyword"  style="display: none">
             <div class="card-header">
-                <h2>Aggiungi un nuovo avvocato </h2>
+                <h2>Aggiungi una nuova keyword </h2>
             </div>
 
             <div class="card-body card-padding">
@@ -27,13 +28,7 @@
                     <div class="col-sm-3">
                         <div class="form-group fg-line">
                             {{ Form::label('name', NULL, ['class' => 'sr-only']) }}
-                            {{ Form::text('name', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Nome', 'required']) }}
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group fg-line">
-                            {{ Form::label('email', NULL, ['class' => 'sr-only']) }}
-                            {{ Form::email('email', NULL, ['class' => 'form-control input-sm', 'placeholder'=> 'Email', 'required']) }}
+                            {{ Form::text('name', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Keyword', 'required']) }}
                         </div>
                     </div>
                     <div class="col-sm-2">
