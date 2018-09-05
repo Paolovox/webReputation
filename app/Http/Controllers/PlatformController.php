@@ -42,10 +42,12 @@ class PlatformController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
-            'platform' => 'required|string'
+            'platform' => 'required|string|max:100'
         ]);
+
         $platform_name = $request->input('platform');
         if (Platform::exists($platform_name)) {
             return redirect()->route('platforms.index')
@@ -57,7 +59,7 @@ class PlatformController extends Controller
         $platform->save();
 
         return redirect()->route('platforms.index')
-            ->with('success','Piattaforma registrata con successo');
+            ->with('success',"Piattaforma \"$platform_name\" registrata con successo");
     }
 
     /**
@@ -68,8 +70,8 @@ class PlatformController extends Controller
      */
     public function show($id)
     {
-
-
+        $platform = Platform::find($id);
+        return view('platforms.show', ['platform'=>$platform]);
     }
 
     /**

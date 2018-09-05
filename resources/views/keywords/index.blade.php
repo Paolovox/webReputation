@@ -18,6 +18,11 @@
                 <p>{{ $message }}</p>
             </div>
         @endif
+        @if ($message = Session::get('error'))
+            <div class="alert alert-warning">
+                <p>{{ $message }}</p>
+            </div>
+        @endif
         <div class="card addKeyword"  style="display: none">
             <div class="card-header">
                 <h2>Aggiungi una nuova keyword </h2>
@@ -51,7 +56,7 @@
                     @foreach($keywords as $counter=>$keyword)
                         <tr>
                             <td>{{++$counter}}</td>
-                            <td><a href="{{ route('clients.index',['lawyer' => $lawyer->id]) }}">{{$keyword->keyword}}</a></td>
+                            <td><a href="{{ route('keywords.show',['$keyword' => $keyword->id]) }}">{{$keyword->keyword}}</a></td>
                         </tr>
                     @endforeach
 

@@ -46,7 +46,18 @@ class KeywordController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        return redirect()->route('lawyers.index')->with('success','Avvocato registrato con successo');
+        $keyword_name = $request->input('name');
+        if (Keyword::exists($keyword_name)) {
+            return redirect()->route('keywords.index')
+                ->with('error',"Keyword \"$keyword_name\" già esistente");
+        }
+
+        $keyword = new Keyword();
+        $keyword->keyword = $keyword_name;
+        $keyword->save();
+
+        return redirect()->route('keywords.index')
+            ->with('success',"Keyword \"$keyword_name\" registrata con successo");
     }
 
     /**
@@ -78,6 +89,18 @@ class KeywordController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+        $keyword = Keyword::find($id);
+        return view('keywords.show', ['keyword'=>$keyword]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showBackup($id)
     {
         $lawyer = User::findLawyer($id);
         return view('keywords.show', ['lawyer'=>$lawyer]);
