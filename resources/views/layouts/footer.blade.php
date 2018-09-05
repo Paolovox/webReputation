@@ -1,5 +1,5 @@
 <footer id="footer">
-    Copyright © {{ date('Y') }} CyberLex
+    Copyright © {{ date('Y') }} SyrusIndustry
     <ul class="f-menu">
     </ul>
 </footer>

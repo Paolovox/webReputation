@@ -3,7 +3,7 @@
 @section('content')
     <header id="header" class="media">
         <div class="pull-left h-logo">
-            <a href="{{ url('/') }}" class="hidden-xs">{{ config('app.name', 'CyberLex') }} <small>&nbsp;</small>
+            <a href="{{ url('/') }}" class="hidden-xs">{{ config('app.name', 'Web Reputation') }} <small>&nbsp;</small>
             </a>
 
             <div class="menu-collapse" data-ma-action="sidebar-open" data-ma-target="main-menu">
