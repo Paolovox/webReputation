@@ -23,7 +23,7 @@ class PlatformController extends Controller
      */
     public function index(Request $request){
 
-        return view('platforms.index');
+        return view('platforms.index',['platforms' => Platform::all()]);
     }
 
     /**
