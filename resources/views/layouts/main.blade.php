@@ -51,7 +51,7 @@
 
         <div class="media-body h-search">
             <form class="p-relative" role="search">
-                <input  type="search" name="q" autocomplete="off" class="hs-input search-input" placeholder="Cerca fra i clienti">
+                <input  type="search" name="q" autocomplete="off" class="hs-input search-input" placeholder="Cerca fra le keywords">
                 <i class="zmdi zmdi-search hs-reset" data-ma-action="search-clear"></i>
             </form>
         </div>

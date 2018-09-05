@@ -17,6 +17,7 @@ class CreateSearchesTable extends Migration
             $table->increments('id');
             $table->string('keywords');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
