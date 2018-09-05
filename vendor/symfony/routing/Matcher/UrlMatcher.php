@@ -11,15 +11,14 @@
 
 namespace Symfony\Component\Routing\Matcher;
 
-use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\NoConfigurationException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 /**
  * UrlMatcher matches URL based on a set of routes.
@@ -32,9 +31,21 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
     const REQUIREMENT_MISMATCH = 1;
     const ROUTE_MATCH = 2;
 
+    /**
+     * @var RequestContext
+     */
     protected $context;
+
+    /**
+     * @var array
+     */
     protected $allow = array();
+
+    /**
+     * @var RouteCollection
+     */
     protected $routes;
+
     protected $request;
     protected $expressionLanguage;
 
@@ -43,6 +54,10 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
      */
     protected $expressionLanguageProviders = array();
 
+    /**
+     * @param RouteCollection $routes  A RouteCollection instance
+     * @param RequestContext  $context The context
+     */
     public function __construct(RouteCollection $routes, RequestContext $context)
     {
         $this->routes = $routes;
@@ -76,11 +91,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
             return $ret;
         }
 
-        if ('/' === $pathinfo && !$this->allow) {
-            throw new NoConfigurationException();
-        }
-
-        throw 0 < \count($this->allow)
+        throw 0 < count($this->allow)
             ? new MethodNotAllowedException(array_unique($this->allow))
             : new ResourceNotFoundException(sprintf('No routes found for "%s".', $pathinfo));
     }
@@ -112,7 +123,6 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
      *
      * @return array An array of parameters
      *
-     * @throws NoConfigurationException  If no routing configuration could be found
      * @throws ResourceNotFoundException If the resource could not be found
      * @throws MethodNotAllowedException If the resource was found but the request method is not allowed
      */
@@ -135,12 +145,6 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
                 continue;
             }
 
-            $status = $this->handleRouteRequirements($pathinfo, $name, $route);
-
-            if (self::REQUIREMENT_MISMATCH === $status[0]) {
-                continue;
-            }
-
             // check HTTP method requirement
             if ($requiredMethods = $route->getMethods()) {
                 // HEAD and GET are equivalent as per RFC
@@ -148,16 +152,24 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
                     $method = 'GET';
                 }
 
-                if (!\in_array($method, $requiredMethods)) {
-                    if (self::REQUIREMENT_MATCH === $status[0]) {
-                        $this->allow = array_merge($this->allow, $requiredMethods);
-                    }
+                if (!in_array($method, $requiredMethods)) {
+                    $this->allow = array_merge($this->allow, $requiredMethods);
 
                     continue;
                 }
             }
 
-            return $this->getAttributes($route, $name, array_replace($matches, $hostMatches, isset($status[1]) ? $status[1] : array()));
+            $status = $this->handleRouteRequirements($pathinfo, $name, $route);
+
+            if (self::ROUTE_MATCH === $status[0]) {
+                return $status[1];
+            }
+
+            if (self::REQUIREMENT_MISMATCH === $status[0]) {
+                continue;
+            }
+
+            return $this->getAttributes($route, $name, array_replace($matches, $hostMatches));
         }
     }
 
@@ -215,7 +227,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
     protected function mergeDefaults($params, $defaults)
     {
         foreach ($params as $key => $value) {
-            if (!\is_int($key)) {
+            if (!is_int($key)) {
                 $defaults[$key] = $value;
             }
         }

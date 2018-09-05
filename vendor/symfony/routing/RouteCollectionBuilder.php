@@ -38,6 +38,9 @@ class RouteCollectionBuilder
     private $methods;
     private $resources = array();
 
+    /**
+     * @param LoaderInterface $loader
+     */
     public function __construct(LoaderInterface $loader = null)
     {
         $this->loader = $loader;
@@ -76,10 +79,10 @@ class RouteCollectionBuilder
             foreach ($collection->getResources() as $resource) {
                 $builder->addResource($resource);
             }
-        }
 
-        // mount into this builder
-        $this->mount($prefix, $builder);
+            // mount into this builder
+            $this->mount($prefix, $builder);
+        }
 
         return $builder;
     }
@@ -118,7 +121,7 @@ class RouteCollectionBuilder
      * @param string                 $prefix
      * @param RouteCollectionBuilder $builder
      */
-    public function mount($prefix, self $builder)
+    public function mount($prefix, RouteCollectionBuilder $builder)
     {
         $builder->prefix = trim(trim($prefix), '/');
         $this->routes[] = $builder;
@@ -251,6 +254,8 @@ class RouteCollectionBuilder
     /**
      * Adds a resource for this collection.
      *
+     * @param ResourceInterface $resource
+     *
      * @return $this
      */
     private function addResource(ResourceInterface $resource)
@@ -313,10 +318,10 @@ class RouteCollectionBuilder
 
                 $routeCollection->addCollection($subCollection);
             }
-        }
 
-        foreach ($this->resources as $resource) {
-            $routeCollection->addResource($resource);
+            foreach ($this->resources as $resource) {
+                $routeCollection->addResource($resource);
+            }
         }
 
         return $routeCollection;
@@ -360,7 +365,7 @@ class RouteCollectionBuilder
         if ($this->loader->supports($resource, $type)) {
             $collections = $this->loader->load($resource, $type);
 
-            return \is_array($collections) ? $collections : array($collections);
+            return is_array($collections) ? $collections : array($collections);
         }
 
         if (null === $resolver = $this->loader->getResolver()) {
@@ -373,6 +378,6 @@ class RouteCollectionBuilder
 
         $collections = $loader->load($resource, $type);
 
-        return \is_array($collections) ? $collections : array($collections);
+        return is_array($collections) ? $collections : array($collections);
     }
 }

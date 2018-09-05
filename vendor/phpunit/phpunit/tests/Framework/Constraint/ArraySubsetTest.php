@@ -11,8 +11,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 
-class ArraySubsetTest extends ConstraintTestCase
+class ArraySubsetTest extends TestCase
 {
     /**
      * @param bool               $expected
@@ -70,7 +71,6 @@ class ArraySubsetTest extends ConstraintTestCase
     public function testEvaluateFailMessage()
     {
         $constraint = new ArraySubset(['foo' => 'bar']);
-
         try {
             $constraint->evaluate(['baz' => 'bar'], '', false);
             $this->fail(\sprintf('Expected %s to be thrown.', ExpectationFailedException::class));

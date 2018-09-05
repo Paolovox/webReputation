@@ -40,13 +40,17 @@ class SymfonyStyle extends OutputStyle
     private $lineLength;
     private $bufferedOutput;
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $this->bufferedOutput = new BufferedOutput($output->getVerbosity(), false, clone $output->getFormatter());
         // Windows cmd wraps lines as soon as the terminal width is reached, whether there are following chars or not.
         $width = (new Terminal())->getWidth() ?: self::MAX_LINE_LENGTH;
-        $this->lineLength = min($width - (int) (\DIRECTORY_SEPARATOR === '\\'), self::MAX_LINE_LENGTH);
+        $this->lineLength = min($width - (int) (DIRECTORY_SEPARATOR === '\\'), self::MAX_LINE_LENGTH);
 
         parent::__construct($output);
     }
@@ -63,7 +67,7 @@ class SymfonyStyle extends OutputStyle
      */
     public function block($messages, $type = null, $style = null, $prefix = ' ', $padding = false, $escape = true)
     {
-        $messages = \is_array($messages) ? array_values($messages) : array($messages);
+        $messages = is_array($messages) ? array_values($messages) : array($messages);
 
         $this->autoPrependBlock();
         $this->writeln($this->createBlock($messages, $type, $style, $prefix, $padding, $escape));
@@ -117,7 +121,7 @@ class SymfonyStyle extends OutputStyle
     {
         $this->autoPrependText();
 
-        $messages = \is_array($message) ? array_values($message) : array($message);
+        $messages = is_array($message) ? array_values($message) : array($message);
         foreach ($messages as $message) {
             $this->writeln(sprintf(' %s', $message));
         }
@@ -269,7 +273,7 @@ class SymfonyStyle extends OutputStyle
     {
         $progressBar = parent::createProgressBar($max);
 
-        if ('\\' !== \DIRECTORY_SEPARATOR || 'Hyper' === getenv('TERM_PROGRAM')) {
+        if ('\\' !== DIRECTORY_SEPARATOR) {
             $progressBar->setEmptyBarCharacter('░'); // light shade character \u2591
             $progressBar->setProgressCharacter('');
             $progressBar->setBarCharacter('▓'); // dark shade character \u2593
@@ -279,7 +283,9 @@ class SymfonyStyle extends OutputStyle
     }
 
     /**
-     * @return mixed
+     * @param Question $question
+     *
+     * @return string
      */
     public function askQuestion(Question $question)
     {
@@ -387,7 +393,7 @@ class SymfonyStyle extends OutputStyle
 
         if (null !== $type) {
             $type = sprintf('[%s] ', $type);
-            $indentLength = \strlen($type);
+            $indentLength = strlen($type);
             $lineIndentation = str_repeat(' ', $indentLength);
         }
 
@@ -399,7 +405,7 @@ class SymfonyStyle extends OutputStyle
 
             $lines = array_merge($lines, explode(PHP_EOL, wordwrap($message, $this->lineLength - $prefixLength - $indentLength, PHP_EOL, true)));
 
-            if (\count($messages) > 1 && $key < \count($messages) - 1) {
+            if (count($messages) > 1 && $key < count($messages) - 1) {
                 $lines[] = '';
             }
         }

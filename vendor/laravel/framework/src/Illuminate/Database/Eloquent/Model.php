@@ -5,6 +5,7 @@ namespace Illuminate\Database\Eloquent;
 use Exception;
 use ArrayAccess;
 use JsonSerializable;
+use BadMethodCallException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Support\Jsonable;
@@ -247,21 +248,6 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         return static::unguarded(function () use ($attributes) {
             return $this->fill($attributes);
         });
-    }
-
-    /**
-     * Qualify the given column name by the model's table.
-     *
-     * @param  string  $column
-     * @return string
-     */
-    public function qualifyColumn($column)
-    {
-        if (Str::contains($column, '.')) {
-            return $column;
-        }
-
-        return $this->getTable().'.'.$column;
     }
 
     /**
@@ -526,7 +512,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public function save(array $options = [])
     {
-        $query = $this->newModelQuery();
+        $query = $this->newQueryWithoutScopes();
 
         // If the "saving" event returns false we'll bail out of the save and return
         // false, indicating that the save failed. This provides a chance for any
@@ -811,7 +797,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     protected function performDeleteOnModel()
     {
-        $this->setKeysForSaveQuery($this->newModelQuery())->delete();
+        $this->setKeysForSaveQuery($this->newQueryWithoutScopes())->delete();
 
         $this->exists = false;
     }
@@ -834,18 +820,6 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     public function newQuery()
     {
         return $this->registerGlobalScopes($this->newQueryWithoutScopes());
-    }
-
-    /**
-     * Get a new query builder that doesn't have any global scopes or eager loading.
-     *
-     * @return \Illuminate\Database\Eloquent\Builder|static
-     */
-    public function newModelQuery()
-    {
-        return $this->newEloquentBuilder(
-            $this->newBaseQueryBuilder()
-        )->setModel($this);
     }
 
     /**
@@ -882,7 +856,12 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public function newQueryWithoutScopes()
     {
-        return $this->newModelQuery()
+        $builder = $this->newEloquentBuilder($this->newBaseQueryBuilder());
+
+        // Once we have the query builders, we will set the model instances so the
+        // builder can easily access any information it may need from the model
+        // while it is constructing and executing various queries against it.
+        return $builder->setModel($this)
                     ->with($this->with)
                     ->withCount($this->withCount);
     }
@@ -898,21 +877,6 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
         $builder = $this->newQuery();
 
         return $builder->withoutGlobalScope($scope);
-    }
-
-    /**
-     * Get a new query to restore one or more models by their queueable IDs.
-     *
-     * @param  array|int  $ids
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function newQueryForRestoration($ids)
-    {
-        if (is_array($ids)) {
-            return $this->newQueryWithoutScopes()->whereIn($this->getQualifiedKeyName(), $ids);
-        }
-
-        return $this->newQueryWithoutScopes()->whereKey($ids);
     }
 
     /**
@@ -961,7 +925,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      * @param  string|null  $using
      * @return \Illuminate\Database\Eloquent\Relations\Pivot
      */
-    public function newPivot(self $parent, array $attributes, $table, $exists, $using = null)
+    public function newPivot(Model $parent, array $attributes, $table, $exists, $using = null)
     {
         return $using ? $using::fromRawAttributes($parent, $attributes, $table, $exists)
                       : Pivot::fromAttributes($parent, $attributes, $table, $exists);
@@ -1177,9 +1141,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     public function getTable()
     {
         if (! isset($this->table)) {
-            return str_replace(
-                '\\', '', Str::snake(Str::plural(class_basename($this)))
-            );
+            return str_replace('\\', '', Str::snake(Str::plural(class_basename($this))));
         }
 
         return $this->table;
@@ -1228,7 +1190,7 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      */
     public function getQualifiedKeyName()
     {
-        return $this->qualifyColumn($this->getKeyName());
+        return $this->getTable().'.'.$this->getKeyName();
     }
 
     /**
@@ -1474,7 +1436,13 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
             return $this->$method(...$parameters);
         }
 
-        return $this->newQuery()->$method(...$parameters);
+        try {
+            return $this->newQuery()->$method(...$parameters);
+        } catch (BadMethodCallException $e) {
+            throw new BadMethodCallException(
+                sprintf('Call to undefined method %s::%s()', get_class($this), $method)
+            );
+        }
     }
 
     /**

@@ -25,15 +25,15 @@ class UserTableSeeder extends Seeder
         $admin->roles()->attach($admin_role);
 
         $lawyer = new User();
-        $lawyer->name = 'Paolo Laywer';
-        $lawyer->email = 'paolo@syrus.it';
+        $lawyer->name = 'Fabrizio Laywer';
+        $lawyer->email = 'fabrizio@syrus.it';
         $lawyer->password = bcrypt('12345678');
         $lawyer->save();
         $lawyer->roles()->attach($lawyer_role);
 
         $client = new User();
-        $client->name = 'Paolo Client';
-        $client->email = 'paolo@syrus.it';
+        $client->name = 'George Client';
+        $client->email = 'george@syrus.it';
         $client->password = bcrypt('12345678');
         $client->save();
         $client->roles()->attach($client_role);
