@@ -22,7 +22,7 @@ class ResultController extends Controller
      */
     public function index(Request $request)
     {
-        return view('results.index',['results' => Result::all(), 'searches' => Search::getSelect()]);
+        return view('results.index',['results' => Result::all(), 'searches' => Search::getSelect(), 'platforms' => Platform::getSelect()]);
     }
 
     /**

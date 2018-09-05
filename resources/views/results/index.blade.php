@@ -30,13 +30,48 @@
 
             <div class="card-body card-padding">
                 {{ Form::open(array('route' => 'results.store', 'class'=>'row')) }}
-                <div class="col-sm-10">
-                    {{-- AGGIUNGERE GLI ALTRI PARAMETRI (link, status, position, description) --}}
-                    <div class="col-sm-6 form-group">
-                        {{ Form::label('search_id', 'Search:', []) }}
-                        {{ Form::select('search_id', $searches, NULL, ['class' => 'form-control input-sm', 'required']) }}
-                    </div>
+
+              <div class="col-sm-10">
+
+
+                <div class="row">
+
+                  <div class="col-sm-4 form-group">
+                    {{ Form::hidden('keyword_id', NULL, ["required"]) }}
+                    {{ Form::label('keyword', "Keyword:", ['class' => '']) }}
+                    {{ Form::text('keyword', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Type text...', 'required']) }}
+                  </div>
+
+                  <div class="col-sm-4 form-group">
+                    {{ Form::label('platform_id', 'Platform:', []) }}
+                    {{ Form::select('platform_id', $platforms, NULL, ['class' => 'form-control input-sm', 'required']) }}
+                  </div>
+
+                  <div class="col-sm-4 form-group">
+                    {{ Form::label('status', 'Status:', []) }}
+                    {{ Form::text('status', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Type status...', 'required']) }}
+                  </div>
+
                 </div>
+
+                <div class="row">
+
+                  <div class="col-sm-1 form-group">
+                    {{ Form::label('position', 'Position:', []) }}
+                    {{ Form::text('position', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Type position...', 'required']) }}
+                  </div>
+
+
+                  <div class="col-sm-11 form-group">
+                    {{ Form::label('description', 'Description:', []) }}
+                    {{ Form::text('description', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Type description...', 'required']) }}
+                  </div>
+
+                </div>
+
+
+              </div>
+
                 <div class="col-sm-2">
                     {{ Form::button('Aggiungi', ['type' => 'submit', 'class' => 'btn btn-primary btn-sm m-t-5 waves-effect']) }}
                 </div>
@@ -68,4 +103,23 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $(function() {
+            $keyword = $('input[name="keyword"]');
+            $keyword.autocomplete({
+                source: "autocomplete/keywords",
+                minLength: 1,
+                select: function(event, ui) {
+                    $('input[name="keyword_id"]').val(ui.item.id);
+                    $('input[name="keyword"]').val(ui.item.value);
+                }
+            });
+            $keyword[0].addEventListener("input", function (ev) {
+                $('input[name="keyword_id"]').val(null);
+            });
+        });
+    </script>
 @endsection
