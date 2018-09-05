@@ -11,6 +11,7 @@
     <title>{{ config('app.name', 'CyberLex') }}</title>
 
     <!-- Styles -->
+    <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/palette.css') }}" rel="stylesheet">
@@ -27,7 +28,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/waves.min.js') }}"></script>
     <script src="{{ asset('js/typeahead.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
-    @yield('scripts')
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+  @yield('scripts')
 </body>
 </html>

@@ -18,21 +18,23 @@ Route::get('/', 'HomeController@index');
 
 
 Route::resource('platforms','PlatformController');
-Route::get('search', 'PlatformController@search');
+Route::get('search', 'PlatformController@search');  # ???
 
 Route::resource('settings', 'UserController');
 
 Route::resource('keywords', 'KeywordController');
 
 Route::resource('searches', 'SearchController');
-Route::post('autocomplete', 'SearchController@autocomplete');
-
 
 Route::resource('links', 'LinkController');
 Route::post('links/remove','LinkController@remove');
 
 Route::resource('documents', 'DocumentController');
 Route::resource('tickets', 'TicketController');
+
+
+Route::get('autocomplete/keywords', 'KeywordController@autocomplete');
+
 
 
 Route::get('file/{filename}', [

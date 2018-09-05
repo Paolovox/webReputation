@@ -50,7 +50,7 @@ class SearchController extends Controller
         $platform_id = $request->input('platform_id');
         $keyword_id = $request->input('keyword_id');
         if (Search::exists($platform_id, $keyword_id)) {
-            return redirect()->route('platforms.index')
+            return redirect()->route('searches.index')
                 ->with('error',"Ricerca \"(platform_id=$platform_id, keyword_id=$keyword_id)\" già esistente");
         }
 
@@ -59,7 +59,7 @@ class SearchController extends Controller
         $search->keyword_id = $keyword_id;
         $search->save();
 
-        return redirect()->route('platforms.index')
+        return redirect()->route('searches.index')
             ->with('success',"Ricerca \"(platform_id=$platform_id, keyword_id=$keyword_id)\" registrata con successo");
     }
 

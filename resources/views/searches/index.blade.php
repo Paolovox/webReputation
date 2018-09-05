@@ -30,13 +30,15 @@
 
             <div class="card-body card-padding">
                 {{ Form::open(array('route' => 'searches.store', 'class'=>'row')) }}
-                <div class="col-sm-3">
-                    <div class="form-group fg-line">
-                        {{ Form::hidden('keyword_id') }}
-                        {{ Form::label('platform_id', NULL, ['class' => 'sr-only']) }}
-                        {{ Form::select('platform_id', $platforms, null, ['class' => 'form-control input-sm', 'required']) }}
-                        {{ Form::label('keyword', NULL, ['class' => 'sr-only']) }}
-                        {{ Form::text('keyword', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Google, Facebook, ...', 'required']) }}
+                <div class="col-sm-10">
+                    <div class="col-sm-6 form-group">
+                        {{ Form::label('platform_id', 'Platform:', []) }}
+                        {{ Form::select('platform_id', $platforms, NULL, ['class' => 'form-control input-sm', 'required']) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ Form::hidden('keyword_id', NULL, ["required"]) }}
+                        {{ Form::label('keyword', "Keyword:", ['class' => '']) }}
+                        {{ Form::text('keyword', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Type text...', 'required']) }}
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -72,8 +74,21 @@
     </div>
 @endsection
 
-@section('script')
+@section('scripts')
     <script type="text/javascript">
-
+        $(function() {
+            $keyword = $('input[name="keyword"]');
+            $keyword.autocomplete({
+                source: "autocomplete/keywords",
+                minLength: 1,
+                select: function(event, ui) {
+                    $('input[name="keyword_id"]').val(ui.item.id);
+                    $('input[name="keyword"]').val(ui.item.value);
+                }
+            });
+            $keyword[0].addEventListener("input", function (ev) {
+                $('input[name="keyword_id"]').val(null);
+            });
+        });
     </script>
 @endsection

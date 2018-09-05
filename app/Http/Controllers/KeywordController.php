@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Mail;
 use App\Keyword;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 use Mockery\Exception;
 
 class KeywordController extends Controller
