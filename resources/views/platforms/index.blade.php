@@ -51,7 +51,7 @@
                       @foreach($platforms as $counter=>$platform)
                           <tr>
                               <td>{{++$counter}}</td>
-                              <td><a href="{{ route('platforms.index',['lawyer' => $lawyer->id]) }}">{{$platform->platform}}</a></td>
+                              <td><a href="{{ route('platforms.index',['platform' => $platform->id]) }}">{{$platform->platform}}</a></td>
                           </tr>
                       @endforeach
 
