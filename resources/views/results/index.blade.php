@@ -85,16 +85,24 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Platform</th>
                         <th>Keyword</th>
+                        <th>Platform</th>
+                        <th>Status</th>
+                        <th>Position</th>
+                        <th>Description</th>
+                        <th>Data</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($results as $counter=>$result)
                         <tr class="selection" href="{{ route('results.show',['search' => $result->id]) }}">
                             <td>{{++$counter}}</td>
-                            <td>{{$result->search->platform->platform}}</td>
                             <td>{{$result->search->keyword->keyword}}</td>
+                            <td>{{$result->search->platform->platform}}</td>
+                            <td>{{$result->search->platform->status}}</td>
+                            <td>{{$result->search->platform->position}}</td>
+                            <td>{{$result->search->platform->description}}</td>
+                            <td>{{$result->search->platform->created_at}}</td>
                         </tr>
                     @endforeach
 
