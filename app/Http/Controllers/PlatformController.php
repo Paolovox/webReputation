@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Client;
 use Illuminate\Support\Facades\Auth;
 
-class ClientController extends Controller
+class PlatformController extends Controller
 {
     public function __construct()
     {
@@ -25,17 +25,8 @@ class ClientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request){
-        $dossiers = NULL;
 
-        if($request->has('lawyer') && $lawyer = User::find($request->input('lawyer')))
-            $dossiers = $lawyer->dossier;
-        else if(Auth::user()->hasRole('admin'))
-            $dossiers = Dossier::all();
-        else $dossiers = Auth::user()->dossier;
-
-        $lawyers = [];
-        if(Auth::user()->hasRole('admin')) $lawyers = User::getLawyers();
-        return view('clients.index', array('dossiers'=>$dossiers, 'lawyers'=>$lawyers));
+        return view('platforms.index');
     }
 
     /**
@@ -84,19 +75,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        try {
-            $client = Client::findOrFail($id);
-            $dossier = $client->dossier;
-            if(!$dossier->isOwner(Auth::user()) && !Auth::user()->isAdmin())
-                return redirect()->action('ClientController@index')->with('error','Cliente mancante');
-            $links = $dossier->links;
-            $documents = $dossier->documents;
-            $tickets = $dossier->tickets;
-            return view('clients.show', ['client'=>$client, 'links'=>$links, 'documents'=>$documents, 'tickets'=> $tickets, 'dossier'=> $dossier]);
 
-        } catch (ModelNotFoundException $exception){
-            return redirect()->action('ClientController@index')->with('error','Cliente mancante');
-        }
 
     }
 

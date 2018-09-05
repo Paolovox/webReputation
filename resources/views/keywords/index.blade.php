@@ -3,7 +3,7 @@
 @section('main-content')
     <div class="card">
         <div class="action-header palette-Blue-Grey-400 bg clearfix">
-            <div class="ah-label hidden-xs palette-White text">Elenco Avvocati</div>
+            <div class="ah-label hidden-xs palette-White text">Elenco Keywords</div>
             <ul class="ah-actions actions a-alt">
                 <li>
                     <a class="ah-search-trigger" data-ma-action="ah-search-open" onclick="return $('.addLawyer').toggle();">

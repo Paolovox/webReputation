@@ -17,12 +17,14 @@ Auth::routes();
 Route::get('/', 'HomeController@index');
 
 
-Route::resource('clients','ClientController');
-Route::get('search', 'ClientController@search');
+Route::resource('platforms','PlatformController');
+Route::get('search', 'PlatformController@search');
 
 Route::resource('settings', 'UserController');
 
 Route::resource('keywords', 'KeywordController');
+
+
 Route::resource('links', 'LinkController');
 Route::post('links/remove','LinkController@remove');
 
