@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail;
-use App\User;
+use App\Search;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 
-class LawyerController extends Controller
+class KeywordController extends Controller
 {
     public function __construct()
     {
@@ -21,7 +21,7 @@ class LawyerController extends Controller
      */
     public function index()
     {
-        return view('lawyers.index',['lawyers' => User::getLawyers()]);
+        return view('keywords.index',['keywords' => Search::all()]);
     }
 
     /**
@@ -66,7 +66,7 @@ class LawyerController extends Controller
     public function show($id)
     {
         $lawyer = User::findLawyer($id);
-        return view('lawyers.show', ['lawyer'=>$lawyer]);
+        return view('keywords.show', ['lawyer'=>$lawyer]);
     }
 
     /**

@@ -9,7 +9,7 @@ class Search extends Model
 {
 
   use SoftDeletes;
-  protected $table = "search";
+  protected $table = "searches";
 
 
 

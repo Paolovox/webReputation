@@ -1,4 +1,4 @@
-@extends('layouts.main')
+  @extends('layouts.main')
 
 @section('main-content')
     <div class="card">
@@ -23,7 +23,7 @@
             </div>
 
             <div class="card-body card-padding">
-                {{ Form::open(array('route' => 'lawyers.store', 'class'=>'row')) }}
+                {{ Form::open(array('route' => 'keywords.store', 'class'=>'row')) }}
                     <div class="col-sm-3">
                         <div class="form-group fg-line">
                             {{ Form::label('name', NULL, ['class' => 'sr-only']) }}
@@ -49,20 +49,14 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Avvocato</th>
-                        <th>Email</th>
-                        <th>Numero Clienti</th>
-                        <th>Data Iscrizione</th>
+                        <th>Keyword</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($lawyers as $counter=>$lawyer)
+                    @foreach($keywords as $counter=>$keyword)
                         <tr>
                             <td>{{++$counter}}</td>
-                            <td><a href="{{ route('clients.index',['lawyer' => $lawyer->id]) }}">{{$lawyer->name}}</a></td>
-                            <td>{{$lawyer->email}}</td>
-                            <td>{{count($lawyer->dossier)}}</td>
-                            <td>{{Carbon\Carbon::parse($lawyer->created_at)->format('d-m-Y') }}</td>
+                            <td><a href="{{ route('clients.index',['lawyer' => $lawyer->id]) }}">{{$keyword->keyword}}</a></td>
                         </tr>
                     @endforeach
 

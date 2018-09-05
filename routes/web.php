@@ -22,7 +22,7 @@ Route::get('search', 'ClientController@search');
 
 Route::resource('settings', 'UserController');
 
-Route::resource('lawyers', 'LawyerController');
+Route::resource('keywords', 'KeywordController');
 Route::resource('links', 'LinkController');
 Route::post('links/remove','LinkController@remove');
 
