@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Mail;
 use App\Keyword;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Input;
 use Mockery\Exception;
 
 class KeywordController extends Controller
@@ -138,5 +140,15 @@ class KeywordController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function autocomplete() {
+        $term = Input::get('term');
+        $results = array();
+        $queries = Keyword::where('keyword', 'LIKE', '%'.$term.'%')->take(5)->get();
+        foreach ($queries as $query) {
+            $results[] = [ 'id' => $query->id, 'value' => $query->keyword ];
+        }
+        return Response::json($results);
     }
 }

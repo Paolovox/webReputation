@@ -14,6 +14,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Search extends Model
 {
-  use SoftDeletes;
-  protected $table = "searches";
+    use SoftDeletes;
+    protected $table = "searches";
+
+    function keyword(){
+        return $this->hasOne('App\Keyword', 'id', 'keyword_id');
+    }
+
+    function platform(){
+        return $this->hasOne('App\Platform', 'id', 'platform_id');
+    }
+
+    public static function exists($platform_id, $keyword_id) {
+        return self::where('platform_id', $platform_id)->where('keyword_id', $keyword_id)->exists();
+    }
 }

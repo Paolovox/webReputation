@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Http\Request;
 use App\Platform;
-use Illuminate\Support\Facades\Auth;
+use App\Search;
+use Illuminate\Http\Request;
 
-class PlatformController extends Controller
+class SearchController extends Controller
 {
     public function __construct()
     {
@@ -19,9 +19,9 @@ class PlatformController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request){
-
-        return view('platforms.index',['platforms' => Platform::all()]);
+    public function index(Request $request)
+    {
+        return view('searches.index',['searches' => Search::all(), 'platforms' => Platform::getSelect()]);
     }
 
     /**
@@ -43,21 +43,24 @@ class PlatformController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'platform' => 'required|string|max:100'
+            'platform_id' => 'required|exists:platforms,id',
+            'keyword_id' => 'required|exists:keywords,id'
         ]);
 
-        $platform_name = $request->input('platform');
-        if (Platform::exists($platform_name)) {
+        $platform_id = $request->input('platform_id');
+        $keyword_id = $request->input('keyword_id');
+        if (Search::exists($platform_id, $keyword_id)) {
             return redirect()->route('platforms.index')
-                ->with('error',"Piattaforma \"$platform_name\" già esistente");
+                ->with('error',"Ricerca \"(platform_id=$platform_id, keyword_id=$keyword_id)\" già esistente");
         }
 
-        $platform = new Platform();
-        $platform->platform = $platform_name;
-        $platform->save();
+        $search = new Search;
+        $search->platform_id = $platform_id;
+        $search->keyword_id = $keyword_id;
+        $search->save();
 
         return redirect()->route('platforms.index')
-            ->with('success',"Piattaforma \"$platform_name\" registrata con successo");
+            ->with('success',"Ricerca \"(platform_id=$platform_id, keyword_id=$keyword_id)\" registrata con successo");
     }
 
     /**
@@ -68,8 +71,8 @@ class PlatformController extends Controller
      */
     public function show($id)
     {
-        $platform = Platform::find($id);
-        return view('platforms.show', ['platform'=>$platform]);
+        $search = Search::find($id);
+        return view('searches.show', ['search'=>$search]);
     }
 
     /**
@@ -104,18 +107,5 @@ class PlatformController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function search(Request $request)
-    {
-        //
-    }
-
-    public function searchBackup(Request $request)
-    {
-        if(Auth::user()->isAdmin())
-            return Client::where('name', 'like','%'.$request->get('q').'%')->get(['clients.id','clients.name']);
-        else
-            return Client::search($request->get('q'), Auth::user());
     }
 }

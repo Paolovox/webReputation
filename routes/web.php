@@ -24,6 +24,9 @@ Route::resource('settings', 'UserController');
 
 Route::resource('keywords', 'KeywordController');
 
+Route::resource('searches', 'SearchController');
+Route::post('autocomplete', 'SearchController@autocomplete');
+
 
 Route::resource('links', 'LinkController');
 Route::post('links/remove','LinkController@remove');
@@ -33,6 +36,6 @@ Route::resource('tickets', 'TicketController');
 
 
 Route::get('file/{filename}', [
-        'as' => 'documents.file',
-        'uses' => 'DocumentController@getFile'
-        ])->where('filename', '^[^/]+$');
+    'as' => 'documents.file',
+    'uses' => 'DocumentController@getFile'
+])->where('filename', '^[^/]+$');

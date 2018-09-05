@@ -56,16 +56,12 @@
             </form>
         </div>
     </header>
-<section id="main">
-    @include('layouts.menu')
-    <section id="content">
-        @yield('main-content')
-        @include('layouts.footer')
+    <section id="main">
+        @include('layouts.menu')
+        <section id="content">
+            @yield('main-content')
+            @include('layouts.footer')
+        </section>
     </section>
-</section>
-    @endsection
-
-
-    <script type="text/javascript">
-
-    </script>
+@endsection
+@yield('script')
