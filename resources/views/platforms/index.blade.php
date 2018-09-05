@@ -8,7 +8,7 @@
             <ul class="ah-actions actions a-alt">
                 <li>
                     <a class="ah-search-trigger" data-ma-action="ah-search-open" onclick="return $('.addClient').toggle();">
-                        <i class="zmdi zmdi-account-add zmdi-hc-fw"></i>
+                        <i class="zmdi zmdi-collection-plus zmdi-hc-fw"></i>
                     </a>
                 </li>
             </ul>
