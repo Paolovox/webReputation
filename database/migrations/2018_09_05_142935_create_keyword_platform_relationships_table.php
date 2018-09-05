@@ -22,7 +22,6 @@ class CreateKeywordPlatformRelationshipsTable extends Migration
             $table->foreign('keyword_id')->references('id')->on('keywords');
             $table->foreign('platform_id')->references('id')->on('platforms');
 
-
             $table->timestamps();
             $table->softDeletes();
 
