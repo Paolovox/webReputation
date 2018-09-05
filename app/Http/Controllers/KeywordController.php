@@ -44,6 +44,21 @@ class KeywordController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+        ]);
+
+        return redirect()->route('lawyers.index')->with('success','Avvocato registrato con successo');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeBackup(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
         ]);
         try{
@@ -52,9 +67,8 @@ class KeywordController extends Controller
         } catch (Exception $exception){
             $lawyer->forceDelete();
             return redirect()->route('lawyers.index')->with('fail','Non e\' stato possibile aggiunngere l\'avvocato. Controllare i dati prima di riprovare.');
-    }
+        }
         return redirect()->route('lawyers.index')->with('success','Avvocato registrato con successo');
-
     }
 
     /**

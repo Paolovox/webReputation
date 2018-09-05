@@ -43,8 +43,14 @@ class PlatformController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        $request->validate([]);
+        $request->validate([
+            'platform' => 'required|string'
+        ]);
         $platform_name = $request->input('platform');
+        if (Platform::exists($platform_name)) {
+            return redirect()->route('platforms.index')
+                ->with('error',"Piattaforma \"$platform_name\" già esistente");
+        }
 
         $platform = new Platform();
         $platform->platform = $platform_name;

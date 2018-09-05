@@ -19,23 +19,28 @@
                 <p>{{ $message }}</p>
             </div>
         @endif
+        @if ($message = Session::get('error'))
+            <div class="alert alert-warning">
+                <p>{{ $message }}</p>
+            </div>
+        @endif
         <div class="card addClient"  style="display: none">
             <div class="card-header">
                 <h2>Aggiungi una nuova Piattaforma </h2>
             </div>
 
             <div class="card-body card-padding">
-              {{ Form::open(array('route' => 'platforms.store', 'class'=>'row')) }}
-                  <div class="col-sm-3">
-                      <div class="form-group fg-line">
-                          {{ Form::label('platform', NULL, ['class' => 'sr-only']) }}
-                          {{ Form::text('platform', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Platform', 'required']) }}
-                      </div>
-                  </div>
-                  <div class="col-sm-2">
-                      {{ Form::button('Aggiungi', ['type' => 'submit', 'class' => 'btn btn-primary btn-sm m-t-5 waves-effect']) }}
-                  </div>
-                  {{ Form::close() }}
+                {{ Form::open(array('route' => 'platforms.store', 'class'=>'row')) }}
+                <div class="col-sm-3">
+                    <div class="form-group fg-line">
+                        {{ Form::label('platform', NULL, ['class' => 'sr-only']) }}
+                        {{ Form::text('platform', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Google, Facebook, Twitter, ...', 'required']) }}
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    {{ Form::button('Aggiungi', ['type' => 'submit', 'class' => 'btn btn-primary btn-sm m-t-5 waves-effect']) }}
+                </div>
+                {{ Form::close() }}
             </div>
         </div>
         <div class="card-header">
@@ -48,12 +53,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                      @foreach($platforms as $counter=>$platform)
-                          <tr>
-                              <td>{{++$counter}}</td>
-                              <td><a href="{{ route('platforms.index',['platform' => $platform->id]) }}">{{$platform->platform}}</a></td>
-                          </tr>
-                      @endforeach
+                    @foreach($platforms as $counter=>$platform)
+                        <tr>
+                            <td>{{++$counter}}</td>
+                            <td><a href="{{ route('platforms.index',['platform' => $platform->id]) }}">{{$platform->platform}}</a></td>
+                        </tr>
+                    @endforeach
 
                     </tbody>
                 </table>

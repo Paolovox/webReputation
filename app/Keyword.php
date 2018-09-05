@@ -13,7 +13,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Keyword extends Model
 {
-  use SoftDeletes;
-  protected $table = "keywords";
+    use SoftDeletes;
+    protected $table = "keywords";
 
+    public static function exists(string $keyword) {
+        return self::whereRaw('LOWER(`keyword`) LIKE ? ', [trim(strtolower($keyword)).'%'])->exists();
+    }
 }

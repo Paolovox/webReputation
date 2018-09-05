@@ -13,7 +13,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Platform extends Model
 {
-  use SoftDeletes;
-  protected $table = "platforms";
+    use SoftDeletes;
+    protected $table = "platforms";
 
+    public static function exists(string $platform) {
+        return self::whereRaw('LOWER(`platform`) LIKE ? ', [trim(strtolower($platform)).'%'])->exists();
+    }
 }
