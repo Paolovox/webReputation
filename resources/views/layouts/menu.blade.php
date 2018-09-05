@@ -9,5 +9,8 @@
         <li>
             <a href="{{route('searches.index')}}"><i class="zmdi zmdi-search zmdi-hc-fw"></i> Searches</a>
         </li>
+        <li>
+            <a href="{{route('results.index')}}"><i class="zmdi zmdi-link zmdi-hc-fw"></i> Results</a>
+        </li>
     </ul>
 </aside>
