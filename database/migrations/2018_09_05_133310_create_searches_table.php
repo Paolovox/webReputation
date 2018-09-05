@@ -13,9 +13,9 @@ class CreateSearchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('searches', function (Blueprint $table) {
+        Schema::create('keywords', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('keywords');
+            $table->string('keyword');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +28,6 @@ class CreateSearchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('searches');
+        Schema::dropIfExists('keywords');
     }
 }

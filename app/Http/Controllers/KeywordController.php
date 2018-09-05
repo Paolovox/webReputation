@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail;
-use App\Search;
+use App\Keyword;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 
@@ -21,7 +21,7 @@ class KeywordController extends Controller
      */
     public function index()
     {
-        return view('keywords.index',['keywords' => Search::all()]);
+        return view('keywords.index',['keywords' => Keyword::all()]);
     }
 
     /**
