@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Document;
-use App\Dossier;
-use App\Link;
-use App\Ticket;
+
 use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use App\Client;
+use App\Platform;
 use Illuminate\Support\Facades\Auth;
 
 class PlatformController extends Controller
@@ -47,24 +44,14 @@ class PlatformController extends Controller
      */
     public function store(Request $request){
         $request->validate([]);
-        $name = $request->input('name');
+        $platform_name = $request->input('platform');
 
-        $lawyer = Auth::user()->id;
-        if(Auth::user()->hasRole('admin'))
-            $lawyer = $request->input('lawyer');
+        $platform = new Platform();
+        $platform->platform = $platform_name;
+        $platform->save();
 
-        $client = new Client;
-        $client->name = $name;
-        $client->save();
-
-        $dossier = new Dossier;
-        $dossier->number = Dossier::getNumber();
-        $dossier->lawyer_id = $lawyer;
-        $dossier->client_id = $client->id;
-
-        $dossier->save();
-        return redirect()->route('clients.show', [$dossier->client_id])
-            ->with('success','Cliente registrato con successo');
+        return redirect()->route('platforms.index')
+            ->with('success','Piattaforma registrata con successo');
     }
 
     /**

@@ -28,8 +28,8 @@
               {{ Form::open(array('route' => 'platforms.store', 'class'=>'row')) }}
                   <div class="col-sm-3">
                       <div class="form-group fg-line">
-                          {{ Form::label('name', NULL, ['class' => 'sr-only']) }}
-                          {{ Form::text('name', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Platform', 'required']) }}
+                          {{ Form::label('platform', NULL, ['class' => 'sr-only']) }}
+                          {{ Form::text('platform', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Platform', 'required']) }}
                       </div>
                   </div>
                   <div class="col-sm-2">
@@ -48,7 +48,12 @@
                     </tr>
                     </thead>
                     <tbody>
-
+                      @foreach($platforms as $counter=>$platform)
+                          <tr>
+                              <td>{{++$counter}}</td>
+                              <td><a href="{{ route('platforms.index',['lawyer' => $lawyer->id]) }}">{{$platform->platform}}</a></td>
+                          </tr>
+                      @endforeach
 
                     </tbody>
                 </table>
