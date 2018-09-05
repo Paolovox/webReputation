@@ -54,9 +54,9 @@
                     </thead>
                     <tbody>
                     @foreach($platforms as $counter=>$platform)
-                        <tr>
+                        <tr class="selection" href="{{ route('platforms.show',['platform' => $platform->id]) }}">
                             <td>{{++$counter}}</td>
-                            <td><a href="{{ route('platforms.show',['platform' => $platform->id]) }}">{{$platform->platform}}</a></td>
+                            <td>{{$platform->platform}}</td>
                         </tr>
                     @endforeach
 

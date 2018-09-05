@@ -60,10 +60,10 @@
                     </thead>
                     <tbody>
                     @foreach($searches as $counter=>$search)
-                        <tr>
-                            <td><a href="{{ route('searches.show',['search' => $search->id]) }}"></a>{{++$counter}}</td>
-                            <td><a href="{{ route('searches.show',['search' => $search->id]) }}"></a>{{$search->platform->platform}}</td>
-                            <td><a href="{{ route('searches.show',['search' => $search->id]) }}"></a>{{$search->keyword->keyword}}</td>
+                        <tr class="selection" href="{{ route('searches.show',['search' => $search->id]) }}">
+                            <td>{{++$counter}}</td>
+                            <td>{{$search->platform->platform}}</td>
+                            <td>{{$search->keyword->keyword}}</td>
                         </tr>
                     @endforeach
 

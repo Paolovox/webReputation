@@ -25,6 +25,10 @@ class Search extends Model
         return $this->hasOne('App\Platform', 'id', 'platform_id');
     }
 
+    function results() {
+        return $this->hasMany('App\Result',  "search_id","id");
+    }
+
     public static function exists($platform_id, $keyword_id) {
         return self::where('platform_id', $platform_id)->where('keyword_id', $keyword_id)->exists();
     }

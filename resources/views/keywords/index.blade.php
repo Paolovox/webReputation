@@ -54,9 +54,9 @@
                     </thead>
                     <tbody>
                     @foreach($keywords as $counter=>$keyword)
-                        <tr>
+                        <tr class="selection" href="{{ route('keywords.show',['keyword' => $keyword->id]) }}">
                             <td>{{++$counter}}</td>
-                            <td><a href="{{ route('keywords.show',['keyword' => $keyword->id]) }}">{{$keyword->keyword}}</a></td>
+                            <td>{{$keyword->keyword}}</td>
                         </tr>
                     @endforeach
 

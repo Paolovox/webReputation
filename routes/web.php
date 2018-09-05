@@ -16,26 +16,27 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 
-
-Route::resource('platforms','PlatformController');
-Route::get('search', 'PlatformController@search');  # ???
-
 Route::resource('settings', 'UserController');
 
+Route::resource('platforms','PlatformController');
 Route::resource('keywords', 'KeywordController');
-
 Route::resource('searches', 'SearchController');
+Route::resource('results', 'ResultController');
+
+// Autocomplete keywords: ritorna un json con tutte le keywords simili al parametro "term" (default di jQuery)
+Route::get('autocomplete/keywords', 'KeywordController@autocomplete');
+
+
+
+/**** (Fabrizio) DA QUI IN POI NON SO CHE ROBA È: ****/
+
+Route::get('search', 'PlatformController@search');  # ???
 
 Route::resource('links', 'LinkController');
 Route::post('links/remove','LinkController@remove');
 
 Route::resource('documents', 'DocumentController');
 Route::resource('tickets', 'TicketController');
-
-
-Route::get('autocomplete/keywords', 'KeywordController@autocomplete');
-
-
 
 Route::get('file/{filename}', [
     'as' => 'documents.file',

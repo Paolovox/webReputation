@@ -29,6 +29,7 @@
     <script src="{{ asset('js/waves.min.js') }}"></script>
     <script src="{{ asset('js/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
   @yield('scripts')
 </body>
 </html>

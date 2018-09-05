@@ -19,4 +19,8 @@ class Result extends Model
 {
   use SoftDeletes;
   protected $table = "results";
+
+    function search(){
+        return $this->hasOne('App\Search', 'id', 'search_id');
+    }
 }
