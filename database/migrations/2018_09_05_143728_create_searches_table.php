@@ -15,6 +15,8 @@ class CreateSearchesTable extends Migration
     {
         Schema::create('searches', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('keyword_platform_relationship_id')->unsigned();
+            $table->foreign('keyword_platform_relationship_id')->references('id')->on('keyword_platform_relationships');
             $table->timestamps();
             $table->softDeletes();
 

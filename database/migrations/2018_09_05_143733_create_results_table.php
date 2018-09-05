@@ -15,6 +15,16 @@ class CreateResultsTable extends Migration
     {
         Schema::create('results', function (Blueprint $table) {
             $table->increments('id');
+
+            $table->integer('search_id')->unsigned();
+            $table->foreign('search_id')->references('id')->on('searches');
+
+            $table->string('link');
+            $table->string('status');
+            $table->string('position');
+            $table->string('description');
+
+
             $table->timestamps();
             $table->softDeletes();
 
