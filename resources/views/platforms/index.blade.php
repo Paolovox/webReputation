@@ -25,7 +25,17 @@
             </div>
 
             <div class="card-body card-padding">
-
+              {{ Form::open(array('route' => 'platforms.store', 'class'=>'row')) }}
+                  <div class="col-sm-3">
+                      <div class="form-group fg-line">
+                          {{ Form::label('name', NULL, ['class' => 'sr-only']) }}
+                          {{ Form::text('name', NULL, ['class' => 'form-control input-sm',  'placeholder'=> 'Platform', 'required']) }}
+                      </div>
+                  </div>
+                  <div class="col-sm-2">
+                      {{ Form::button('Aggiungi', ['type' => 'submit', 'class' => 'btn btn-primary btn-sm m-t-5 waves-effect']) }}
+                  </div>
+                  {{ Form::close() }}
             </div>
         </div>
         <div class="card-header">
